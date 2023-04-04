@@ -50,6 +50,6 @@ jobs:
 
       - name: Load image into docker daemon
         run: |
-          docker buildx build --load --platform ${{ matrix.ARCH }} -t multi-arch-gha:latest
+          docker buildx build --load --platform ${{ matrix.ARCH }} -t multi-arch-gha:latest .
           docker image ls
           docker inspect multi-arch-gha:latest | grep Arch
