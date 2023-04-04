@@ -32,18 +32,24 @@ jobs:
           platforms: linux/amd64,linux/ppc64le
           push: false
 
-      - name: Build and Push image
-        run: |
+#       - name: Build and Push image
+#         run: |
         
-          echo ${{ matrix.ARCH }}
+#           echo ${{ matrix.ARCH }}
 
-          if [[ "${{ matrix.ARCH }}" == "linux/ppc64le" ]]; then
-            export TAG=ppc64le
-          else
-            export TAG=amd64
-          fi
+#           if [[ "${{ matrix.ARCH }}" == "linux/ppc64le" ]]; then
+#             export TAG=ppc64le
+#           else
+#             export TAG=amd64
+#           fi
 
-          echo "Building for $TAG"
+#           echo "Building for $TAG"
 
-          docker buildx build --platform ${{ matrix.ARCH }} --tag mha:latest-${TAG} -f Dockerfile ..
+#           docker buildx build --platform ${{ matrix.ARCH }} --tag mha:latest-${TAG} -f Dockerfile ..
+#           docker image ls
+
+      - name: Load image into docker daemon
+        run: |
+          docker buildx build --load --platform ${{ matrix.ARCH }} -t multi-arch-gha:latest
           docker image ls
+          docker inspect multi-arch-gha:latest | grep Arch
