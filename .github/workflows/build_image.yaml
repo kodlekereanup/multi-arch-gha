@@ -4,9 +4,9 @@ on: [push, workflow_dispatch]
 
 jobs:
   build:
-#     strategy:
-#       matrix:
-#         ARCH: [linux/ppc64le, linux/amd64]
+    strategy:
+      matrix:
+          ARCH: [linux/ppc64le, linux/amd64]
     name: Build image
     runs-on: ubuntu-latest
     steps:
@@ -25,14 +25,25 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_TOKEN }}
 
-#       - name: Build and Push Image
-#         uses: docker/build-push-action@v3
-#         with:
-#           tags: quay.io/siddhesh_ghadi/multi-arch-gha:latest
-#           platforms: linux/amd64,linux/ppc64le
-#           push: true
+      - name: Build and Push Image
+        uses: docker/build-push-action@v3
+        with:
+          tags: multi-arch-gha:latest
+          platforms: linux/amd64,linux/ppc64le
+          push: false
 
       - name: Build and Push image
         run: |
-          docker buildx build --platform linux/ppc64le,linux/amd64 --tag mha:ma-latest --push -f Dockerfile ..
+        
+          echo ${{ matrix.ARCH }}
+
+          if [[ "${{ matrix.ARCH }}" == "linux/ppc64le" ]]; then
+            export TAG=ppc64le
+          else
+            export TAG=amd64
+          fi
+
+          echo "Building for $TAG"
+
+          docker buildx build --platform ${{ matrix.ARCH }} --tag mha:latest-${TAG} -f Dockerfile ..
           docker image ls
