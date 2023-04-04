@@ -35,9 +35,9 @@ jobs:
       - name: Build and Push image
         run: |
         
-          echo "$ARCH"
+          echo ${{ matrix.ARCH }}
           
-          if [[ "$ARCH" == "linux/ppc64le" ]]; then
+          if [[ "${{ matrix.token }}" == "linux/ppc64le" ]]; then
             export TAG=ppc64le
           else
             export TAG=amd64
@@ -45,5 +45,5 @@ jobs:
           
           echo "Building for $TAG"
 
-          docker buildx build --platform linux/ppc64le --tag mha:ppc64le --load -f Dockerfile ..
+          docker buildx build --platform ${{ matrix.ARCH }} --tag mha:${TAG} --load -f Dockerfile ..
           docker image ls
