@@ -37,7 +37,7 @@ jobs:
         
           echo ${{ matrix.ARCH }}
           
-          if [[ "${{ matrix.token }}" == "linux/ppc64le" ]]; then
+          if [[ "${{ matrix.ARCH }}" == "linux/ppc64le" ]]; then
             export TAG=ppc64le
           else
             export TAG=amd64
