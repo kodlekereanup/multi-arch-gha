@@ -41,5 +41,8 @@ jobs:
             TAG=amd64
           fi
           
+          echo "Building for $TAG"
+          docker buildx ls
+          ls $HOME/.docker/cli-plugins/
           docker buildx build --platform ${ARCH} --tag mha:${TAG} --load -f Dockerfile .. 
           docker image ls
