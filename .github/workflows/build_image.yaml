@@ -25,12 +25,12 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_TOKEN }}
 
-      - name: Build and Push Image
-        uses: docker/build-push-action@v3
-        with:
-          tags: multi-arch-gha:latest
-          platforms: linux/amd64,linux/ppc64le
-          push: false
+#       - name: Build and Push Image
+#         uses: docker/build-push-action@v3
+#         with:
+#           tags: multi-arch-gha:latest
+#           platforms: linux/amd64,linux/ppc64le
+#           push: false
 
 #       - name: Build and Push image
 #         run: |
