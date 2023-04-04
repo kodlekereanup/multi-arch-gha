@@ -35,5 +35,5 @@ jobs:
 
       - name: Build and Push image
         run: |
-          docker buildx build --load --platform ${ARCH} --tag quay.io/mha:${ARCH} -f Dockerfile .. 
+          docker buildx build --platform ${ARCH} --tag quay.io/mha:${ARCH} --load -f Dockerfile .. 
           docker image ls
