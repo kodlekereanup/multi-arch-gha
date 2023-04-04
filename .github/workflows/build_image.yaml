@@ -34,11 +34,13 @@ jobs:
 
       - name: Build and Push image
         run: |
+        
+          echo "$ARCH"
           
           if [[ "$ARCH" == "linux/ppc64le" ]]; then
-            TAG=ppc64le
+            export TAG=ppc64le
           else
-            TAG=amd64
+            export TAG=amd64
           fi
           
           echo "Building for $TAG"
