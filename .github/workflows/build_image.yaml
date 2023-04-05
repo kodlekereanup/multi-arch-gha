@@ -63,6 +63,7 @@ jobs:
           path: /tmp/multi-arch-gha-${TAG}
           
   multi-arch-manifest:
+    needs: build
     name: Create manifest
     runs-on: ubuntu-latest
     steps:
