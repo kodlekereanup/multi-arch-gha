@@ -32,24 +32,61 @@ jobs:
 #           platforms: linux/amd64,linux/ppc64le
 #           push: false
 
-#       - name: Build and Push image
-#         run: |
+      - name: Build and Push image
+        run: |
         
-#           echo ${{ matrix.ARCH }}
+          echo ${{ matrix.ARCH }}
 
-#           if [[ "${{ matrix.ARCH }}" == "linux/ppc64le" ]]; then
-#             export TAG=ppc64le
-#           else
-#             export TAG=amd64
-#           fi
+          if [[ "${{ matrix.ARCH }}" == "linux/ppc64le" ]]; then
+            export TAG=ppc64le
+          else
+            export TAG=amd64
+          fi
 
-#           echo "Building for $TAG"
+          echo "Building for $TAG"
 
-#           docker buildx build --platform ${{ matrix.ARCH }} --tag mha:latest-${TAG} -f Dockerfile ..
+          docker buildx build --platform ${{ matrix.ARCH }} --tag multi-arch-gha:latest-${TAG} -f Dockerfile ..
+          docker image ls
+          docker inspect multi-arch-gha:latest-${TAG} | grep Arch
+          
+
+#       - name: Build image
+#         run: |
+#           docker buildx build --load --platform ${{ matrix.ARCH }} -t multi-arch-gha:${TAG} .
 #           docker image ls
+#           docker inspect multi-arch-gha:latest | grep Arch
 
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: multi-arch-gha:latest-$TAG}
+          path: /tmp/multi-arch-gha-${TAG}
+          
+  multi-arch-manifest:
+    name: Create manifest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download PPC Build Artifact
+        uses: actions/download-artifact@v2.1.1
+        with:
+          name: multi-arch-gha:latest-ppc64le
+          path: /tmp/multi-arch-gha-ppc64le
+          
+      - name: Download AMD Build Artifact
+        uses: actions/download-artifact@v2.1.1
+        with:
+          name: multi-arch-gha:latest-amd64
+          path: /tmp/multi-arch-gha-amd64
+      
       - name: Load image into docker daemon
         run: |
-          docker buildx build --load --platform ${{ matrix.ARCH }} -t multi-arch-gha:latest .
-          docker image ls
-          docker inspect multi-arch-gha:latest | grep Arch
+          docker load --input /tmp/multi-arch-gha-ppc64le
+          docker load --input /tmp/multi-arch-gha-amd64
+          docker image ls -a
+          
+      - name: Create manifest
+        run: |
+          docker manifest create multi-arch-gha-ppc64le multi-arch-gha-amd64 multi-arch-gha:latest
+          
+    
+      
