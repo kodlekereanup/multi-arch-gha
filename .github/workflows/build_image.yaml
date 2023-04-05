@@ -76,13 +76,14 @@ jobs:
         run: |
           ls -lha /tmp/img-ppc64le/
           
-          docker load --input /tmp/img-amd64/mag-img-amd64
-          docker load --input /tmp/img-ppc64le/mag-img-ppc64le
+          docker load --input /tmp/img-amd64/img-amd64.tar
+          docker load --input /tmp/img-ppc64le/img-ppc64le.tar
           docker image ls -a
           
       - name: Create manifest
         run: |
           docker manifest create multi-arch-gha-ppc64le multi-arch-gha-amd64 multi-arch-gha:latest
+          docker manifest inspect multi-arch-gha:latest
           
     
       
