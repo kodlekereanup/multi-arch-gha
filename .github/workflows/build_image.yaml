@@ -58,6 +58,11 @@ jobs:
   multi-arch-manifest:
     needs: build
     name: Create manifest
+    services:
+      registry:
+        image: registry:2
+        ports:
+          - 5000:5000
     runs-on: ubuntu-latest
     steps:
       - name: Download PPC Build Artifact
@@ -85,8 +90,8 @@ jobs:
           
       - name: Create manifest
         run: |
-          docker manifest create multi-arch-gha:latest --amend multi-arch-gha:latest-ppc64le multi-arch-gha:latest-amd64 
-          docker manifest inspect multi-arch-gha:latest
+          docker manifest create localhost:5000/kodlekereanup/multi-arch-gha:latest --amend multi-arch-gha:latest-ppc64le multi-arch-gha:latest-amd64 
+          docker manifest inspect localhost:5000/kodlekereanup/multi-arch-gha:latest
           
     
       
