@@ -1,6 +1,6 @@
 name: Build Multi-arch Image
 
-on: [push, workflow_dispatch]
+on: [workflow_dispatch]
 
 jobs:
   build:
@@ -23,13 +23,18 @@ jobs:
         with:
           driver-opts: network=host
           
-      - name: Build and push to local registry
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          push: true
-          platforms: linux/amd64,linux/ppc64le
-          tags: localhost:5000/kodlekereanup/multi-arch-gha:latest
+#       - name: Build and push to local registry
+#         uses: docker/build-push-action@v4
+#         with:
+#           context: .
+#           push: true
+#           platforms: linux/amd64,linux/ppc64le
+#           tags: localhost:5000/kodlekereanup/multi-arch-gha:latest
+
+
+      - name: Build and push
+        run: |
+          BUILD_BUILDER_IMAGE=true ARCH=linux/ppc64le,linux/amd64 make image
 
       - name: Inspect
         run: |
