@@ -7,6 +7,7 @@ jobs:
     strategy:
       matrix:
           ARCH: [linux/ppc64le, linux/amd64]
+          
     name: Build image
     runs-on: ubuntu-latest
     steps:
@@ -20,13 +21,6 @@ jobs:
         uses: docker/setup-buildx-action@v2
  
 
-#       - name: Build and Push Image
-#         uses: docker/build-push-action@v3
-#         with:
-#           tags: multi-arch-gha:latest
-#           platforms: linux/amd64,linux/ppc64le
-#           push: false
-
       - name: Build and Push image
         run: |
         
@@ -34,8 +28,10 @@ jobs:
 
           if [[ "${{ matrix.ARCH }}" == "linux/ppc64le" ]]; then
             export TAG=ppc64le
+            echo "TAG=ppc64le" >> $GITHUB_ENV
           else
             export TAG=amd64
+            echo "TAG=amd64" >> $GITHUB_ENV
           fi
 
           echo "Building for $TAG"
@@ -44,12 +40,6 @@ jobs:
           docker image ls
           docker inspect multi-arch-gha:latest-${TAG} | grep Arch
           
-
-#       - name: Build image
-#         run: |
-#           docker buildx build --load --platform ${{ matrix.ARCH }} -t multi-arch-gha:${TAG} .
-#           docker image ls
-#           docker inspect multi-arch-gha:latest | grep Arch
 
       - name: Save image
         run: |
