@@ -40,7 +40,7 @@ jobs:
 
           echo "Building for $TAG"
 
-          docker buildx build --platform ${{ matrix.ARCH }} --tag multi-arch-gha:latest-${TAG} -f Dockerfile ..
+          docker buildx build --load --platform ${{ matrix.ARCH }} --tag multi-arch-gha:latest-${TAG} -f Dockerfile ..
           docker image ls
           docker inspect multi-arch-gha:latest-${TAG} | grep Arch
           
