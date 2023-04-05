@@ -9,7 +9,7 @@ jobs:
           ARCH: [linux/ppc64le, linux/amd64]
     
     env:
-      TAG: "${{ matrix.ARCH == 'linux/ppc64le' && 'ppc64le' || 'amd64'"
+      TAG: "${{ matrix.ARCH }} === 'linux/ppc64le' && 'ppc64le' || 'amd64'"
     
     name: Build image
     runs-on: ubuntu-latest
