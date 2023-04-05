@@ -74,9 +74,10 @@ jobs:
       
       - name: Load image into docker daemon
         run: |
-          ls -lha /tmp
-          docker load --input /tmp/img-amd64/mag-img-amd64.tar
-          docker load --input /tmp/img-ppc64le/mag-img-ppc64le.tar
+          ls -lha /tmp/mag-img-amd64/
+          
+          docker load --input /tmp/img-amd64/mag-img-amd64
+          docker load --input /tmp/img-ppc64le/mag-img-ppc64le
           docker image ls -a
           
       - name: Create manifest
