@@ -80,6 +80,9 @@ jobs:
           docker load --input /tmp/img-ppc64le/img-ppc64le.tar
           docker image ls -a
           
+          docker inspect multi-arch-gha:latest-ppc64le | grep Arch
+          docker inspect multi-arch-gha:latest-amd64 | grep Arch
+          
       - name: Create manifest
         run: |
           docker manifest create multi-arch-gha-ppc64le multi-arch-gha-amd64 multi-arch-gha:latest
