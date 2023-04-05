@@ -19,4 +19,4 @@ collector: builder
 image: collector 
 	docker buildx build --push --platform ${ARCH} \
 		-f "$(CURDIR)/Dockerfile" \
-		-t localhost:5000/kodlekereanup/collector:latest .
+		-t -t localhost:5000/kodlekereanup/collector:latest .
