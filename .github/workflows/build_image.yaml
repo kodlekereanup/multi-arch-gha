@@ -85,7 +85,7 @@ jobs:
           
       - name: Create manifest
         run: |
-          docker manifest create multi-arch-gha:latest --amend multi-arch-gha-ppc64le multi-arch-gha-amd64 
+          docker manifest create multi-arch-gha:latest --amend multi-arch-gha:latest-ppc64le multi-arch-gha:latest-amd64 
           docker manifest inspect multi-arch-gha:latest
           
     
