@@ -46,14 +46,14 @@ jobs:
 
       - name: Save image
         run: |
-          docker save multi-arch-gha:latest-${TAG} > /tmp/multi-arch-gha-${TAG}
+          docker save multi-arch-gha:latest-${TAG} > /tmp/img-${TAG}.tar
           ls /tmp/
           
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: multi-arch-gha-latest-${{ env.TAG }}
-          path: /tmp/multi-arch-gha-${{ env.TAG }}
+          name: mag-img-${{ env.TAG }}
+          path: /tmp/img-${{ env.TAG }}.tar
           
   multi-arch-manifest:
     needs: build
@@ -63,19 +63,20 @@ jobs:
       - name: Download PPC Build Artifact
         uses: actions/download-artifact@v2.1.1
         with:
-          name: multi-arch-gha-latest-ppc64le
-          path: /tmp/multi-arch-gha-ppc64le
+          name: mag-img-ppc64le
+          path: /tmp/img-ppc64le
           
       - name: Download AMD Build Artifact
         uses: actions/download-artifact@v2.1.1
         with:
-          name: multi-arch-gha-latest-amd64
-          path: /tmp/multi-arch-gha-amd64
+          name: mag-img-amd64
+          path: /tmp/img-amd64
       
       - name: Load image into docker daemon
         run: |
-          docker load --input /tmp/multi-arch-gha-ppc64le
-          docker load --input /tmp/multi-arch-gha-amd64
+          ls -lha /tmp
+          docker load --input /tmp/img-amd64/mag-img-amd64.tar
+          docker load --input /tmp/img-ppc64le/mag-img-ppc64le.tar
           docker image ls -a
           
       - name: Create manifest
