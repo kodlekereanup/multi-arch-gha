@@ -1,0 +1,36 @@
+name: Build Multi-arch Image
+
+on: [push, workflow_dispatch]
+
+jobs:
+  build:
+    name: Build image
+    runs-on: ubuntu-latest
+    services:
+      registry:
+        image: registry:2
+        ports:
+          - 5000:5000
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+        with:
+          driver-opts: network=host
+          
+      - name: Build and push to local registry
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          platforms: linux/amd64,linux/ppc64le
+          tags: localhost:5000/kodlekereanup/multi-arch-gha:latest
+
+      - name: Inspect
+        run: |
+          docker buildx imagetools inspect localhost:5000/kodlekereanup/multi-arch-gha:latest
