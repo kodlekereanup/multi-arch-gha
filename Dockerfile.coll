@@ -1,1 +1,4 @@
-RUN ls
+FROM ubuntu:latest
+RUN echo "Container for $(uname -m) CPU architecture." > /opt/output
+
+CMD cat /opt/output
