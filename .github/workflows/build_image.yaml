@@ -52,8 +52,8 @@ jobs:
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: multi-arch-gha:latest-ppc64le
-          path: /tmp/multi-arch-gha-ppc64le
+          name: multi-arch-gha-latest-${{ env.TAG }}
+          path: /tmp/multi-arch-gha-${{ env.TAG }}
           
   multi-arch-manifest:
     needs: build
