@@ -7,7 +7,10 @@ jobs:
     strategy:
       matrix:
           ARCH: [linux/ppc64le, linux/amd64]
-          
+    
+    env:
+      TAG: "${{ matrix.ARCH == 'linux/ppc64le' && 'ppc64le' || 'amd64'"
+    
     name: Build image
     runs-on: ubuntu-latest
     steps:
@@ -49,8 +52,8 @@ jobs:
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: multi-arch-gha:latest-${TAG}
-          path: /tmp/multi-arch-gha-${TAG}
+          name: multi-arch-gha:latest-ppc64le
+          path: /tmp/multi-arch-gha-ppc64le
           
   multi-arch-manifest:
     needs: build
