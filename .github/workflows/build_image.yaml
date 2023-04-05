@@ -63,19 +63,19 @@ jobs:
       - name: Download PPC Build Artifact
         uses: actions/download-artifact@v2.1.1
         with:
-          name: multi-arch-gha:latest-ppc64le
+          name: multi-arch-gha-latest-ppc64le
           path: /tmp/multi-arch-gha-ppc64le
           
       - name: Download AMD Build Artifact
         uses: actions/download-artifact@v2.1.1
         with:
-          name: multi-arch-gha:latest-amd64
+          name: multi-arch-gha-latest-amd64
           path: /tmp/multi-arch-gha-amd64
       
       - name: Load image into docker daemon
         run: |
-          docker load --input /tmp/multi-arch-gha-ppc64le
-          docker load --input /tmp/multi-arch-gha-amd64
+          docker load --input /tmp/multi-arch-gha-latest-ppc64le
+          docker load --input /tmp/multi-arch-gha-latest-amd64
           docker image ls -a
           
       - name: Create manifest
