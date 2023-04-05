@@ -74,7 +74,7 @@ jobs:
       
       - name: Load image into docker daemon
         run: |
-          ls -lha /tmp/mag-img-amd64/
+          ls -lha /tmp/img-ppc64le/
           
           docker load --input /tmp/img-amd64/mag-img-amd64
           docker load --input /tmp/img-ppc64le/mag-img-ppc64le
