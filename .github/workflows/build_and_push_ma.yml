@@ -34,3 +34,8 @@ jobs:
       - name: Inspect
         run: |
           docker buildx imagetools inspect localhost:5000/kodlekereanup/multi-arch-gha:latest
+          
+      - name: Pull
+        run: |
+          docker pull localhost:5000/kodlekereanup/multi-arch-gha:latest
+          docker inspect multi-arch-gha:latest | grep Arch
