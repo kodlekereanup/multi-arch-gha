@@ -97,7 +97,7 @@ jobs:
           
       - name: Create manifest
         run: |
-          docker manifest create localhost:5000/kodlekereanup/multi-arch-gha:latest --amend multi-arch-gha:latest-ppc64le --ammend multi-arch-gha:latest-amd64 
+          docker manifest create localhost:5000/kodlekereanup/multi-arch-gha:latest --amend multi-arch-gha:latest-ppc64le --amend multi-arch-gha:latest-amd64 
           docker manifest inspect localhost:5000/kodlekereanup/multi-arch-gha:latest
           
     
