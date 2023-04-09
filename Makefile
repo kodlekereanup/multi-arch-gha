@@ -7,7 +7,7 @@ builder:
 ifdef BUILD_BUILDER_IMAGE
 	docker buildx build --push --platform ${ARCH} \
 		--build-arg NPROCS=$(NPROCS) \
-		-t localhost:5000/kodlekereanup/collector-builder:latest \
+		-t anupkodlekere/multiarchbuild:latest \
 		-f "$(CURDIR)/Dockerfile.coll" \
 		.
 else
@@ -19,4 +19,4 @@ collector: builder
 image: collector 
 	docker buildx build --push --platform ${ARCH} \
 		-f "$(CURDIR)/Dockerfile" \
-		-t localhost:5000/kodlekereanup/collector:latest .
+		-t anupkodlekere/multiarch-test:latest .
