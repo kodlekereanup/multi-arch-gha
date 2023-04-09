@@ -111,7 +111,7 @@ jobs:
           
       - name: Create manifest
         run: |
-          docker manifest create --insecure localhost:5000/kodlekereanup/multi-arch-gha:latest --amend multi-arch-gha:latest-ppc64le --amend multi-arch-gha:latest-amd64 
+          docker manifest create --insecure localhost:5000/kodlekereanup/multi-arch-gha:latest --amend localhost:5000/multi-arch-gha:latest-ppc64le --amend localhost:5000/multi-arch-gha:latest-amd64 
           docker manifest inspect localhost:5000/kodlekereanup/multi-arch-gha:latest
           
     
