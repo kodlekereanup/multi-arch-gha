@@ -65,6 +65,19 @@ jobs:
           - 5000:5000
     runs-on: ubuntu-latest
     steps:
+      - name: Enable insecure registry
+        run: |
+        
+          cat << EOF > ~/.docker/config.json 
+          {
+          "insecure-registries" : ["127.0.0.1:5000"]
+          }
+          EOF
+          
+          sudo systemctl daemon-reload
+          sudo systemctl reload docker
+          sudo systemctl restart docker
+    
       - name: Download PPC Build Artifact
         uses: actions/download-artifact@v2.1.1
         with:
@@ -94,10 +107,11 @@ jobs:
           if [[ "$status_code" == "200" ]]; then
               echo "Registry is up"
           fi
+
           
       - name: Create manifest
         run: |
-          docker manifest create localhost:5000/kodlekereanup/multi-arch-gha:latest --amend multi-arch-gha:latest-ppc64le --amend multi-arch-gha:latest-amd64 
+          docker manifest create --insecure localhost:5000/kodlekereanup/multi-arch-gha:latest --amend multi-arch-gha:latest-ppc64le --amend multi-arch-gha:latest-amd64 
           docker manifest inspect localhost:5000/kodlekereanup/multi-arch-gha:latest
           
     
