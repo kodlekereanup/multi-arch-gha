@@ -45,4 +45,4 @@ jobs:
       - name: Pull
         run: |
           docker pull --platform linux/ppc64le localhost:5000/kodlekereanup/collector:latest
-          docker inspect localhost:5000/collector:latest | grep Arch
+          docker inspect localhost:5000/kodlekereanup/collector:latest | grep Arch
