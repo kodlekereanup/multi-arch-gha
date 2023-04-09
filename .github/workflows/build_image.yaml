@@ -88,9 +88,16 @@ jobs:
           docker inspect multi-arch-gha:latest-ppc64le | grep Arch
           docker inspect multi-arch-gha:latest-amd64 | grep Arch
           
+          
+          echo "Testing registry"
+          status_code=$(curl -I -k -s localhost:5000/ | head -n 1 | cut -d ' ' -f 2)
+          if [[ "$status_code" == "200" ]]; then
+              echo "Registry is up"
+          fi
+          
       - name: Create manifest
         run: |
-          docker manifest create localhost:5000/kodlekereanup/multi-arch-gha:latest --amend multi-arch-gha:latest-ppc64le multi-arch-gha:latest-amd64 
+          docker manifest create localhost:5000/kodlekereanup/multi-arch-gha:latest --amend multi-arch-gha:latest-ppc64le --ammend multi-arch-gha:latest-amd64 
           docker manifest inspect localhost:5000/kodlekereanup/multi-arch-gha:latest
           
     
