@@ -39,8 +39,10 @@ jobs:
       - name: Inspect
         run: |
           docker buildx imagetools inspect localhost:5000/kodlekereanup/collector:latest
+          echo ""
+          docker buildx imagetools inspect localhost:5000/kodlekereanup/collector-builder:latest
           
       - name: Pull
         run: |
           docker pull --platform linux/ppc64le localhost:5000/kodlekereanup/collector:latest
-          docker inspect collector:latest | grep Arch
+          docker inspect localhost:5000/collector:latest | grep Arch
