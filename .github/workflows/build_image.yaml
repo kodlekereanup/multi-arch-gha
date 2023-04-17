@@ -2,6 +2,9 @@ name: Build Multi-arch Image using matrix
 
 on: [workflow_dispatch]
 
+env:
+  DEFAULT_BUILDER_TAG: cache
+
 jobs:
   set-environment:
     name: Set environment variables
@@ -23,7 +26,7 @@ jobs:
             #- We use the existing cache
             COLLECTOR_BUILDER_TAG="${DEFAULT_BUILDER_TAG}"
             if [[ "${{ contains(github.event.pull_request.labels.*.name, 'build-builder-image') }}" == "true" ]]; then
-              COLLECTOR_BUILDER_TAG="${{ inputs.collector-tag }}"
+              COLLECTOR_BUILDER_TAG="latest"
               echo 'build-builder-image=true' >> "$GITHUB_OUTPUT"
             fi
             echo "collector-builder-tag=$COLLECTOR_BUILDER_TAG" >> "$GITHUB_OUTPUT"
