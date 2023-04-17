@@ -1,6 +1,6 @@
 name: Build Multi-arch Image using matrix
 
-on: [workflow_dispatch]
+on: [workflow_dispatch, pull_request ]
 
 env:
   DEFAULT_BUILDER_TAG: cache
