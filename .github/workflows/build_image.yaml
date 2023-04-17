@@ -3,17 +3,55 @@ name: Build Multi-arch Image using matrix
 on: [workflow_dispatch]
 
 jobs:
+  set-environment:
+    name: Set environment variables
+    runs-on: ubuntu-latest
+    outputs:
+      build-builder-image: ${{ steps.set-env.outputs.build-builder-image }}
+      collector-builder-tag: ${{ steps.set-env.outputs.collector-builder-tag }}
+
+    steps:
+      - name: Checks PR, main and release branches
+        id: set-env
+        run: |
+          if [[ "${{ github.event_name != 'pull_request' }}" ]]; then
+            echo 'build-builder-image=true' >> "$GITHUB_OUTPUT"
+            echo "collector-builder-tag=${DEFAULT_BUILDER_TAG}" >> "$GITHUB_OUTPUT"
+          elif [[ "${{ github.event_name == 'pull_request' }}" ]]; then
+            #We have 2 options:
+            #- We build the builder from scratch and give it a custom tag
+            #- We use the existing cache
+            COLLECTOR_BUILDER_TAG="${DEFAULT_BUILDER_TAG}"
+            if [[ "${{ contains(github.event.pull_request.labels.*.name, 'build-builder-image') }}" == "true" ]]; then
+              COLLECTOR_BUILDER_TAG="${{ inputs.collector-tag }}"
+              echo 'build-builder-image=true' >> "$GITHUB_OUTPUT"
+            fi
+            echo "collector-builder-tag=$COLLECTOR_BUILDER_TAG" >> "$GITHUB_OUTPUT"
+            echo "COLLECTOR_APPEND_CID=true" >> "$GITHUB_ENV"
+            if [[ "${{ contains(github.event.pull_request.labels.*.name, 'address-sanitizer') }}" == "true" ]]; then
+              echo "ADDRESS_SANITIZER=true" >> "$GITHUB_ENV"
+            fi
+          fi
+  
   build:
+    needs: set-environment
     strategy:
       matrix:
           ARCH: [linux/ppc64le, linux/amd64]
     
     env:
       TAG: "${{ matrix.ARCH }} === 'linux/ppc64le' && 'ppc64le' || 'amd64'"
+      BUILD_BUILDER_IMAGE: ${{ needs.set-environment.outputs.build-builder-image }}
+      COLLECTOR_BUILDER_TAG: ${{ needs.set-environment.outputs.collector-builder-tag }}
     
     name: Build image
     runs-on: ubuntu-latest
     steps:
+      - name: Log env var
+        run: |
+          echo $BUILD_BUILDER_IMAGE
+          echo $COLLECTOR_BUILDER_TAG
+    
       - name: Checkout
         uses: actions/checkout@v2
 
