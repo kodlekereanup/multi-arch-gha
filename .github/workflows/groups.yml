@@ -1,0 +1,19 @@
+name: Groups
+
+on: [workflow_dispatch]
+
+jobs:
+  build:
+    name: GetID
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Run ID
+        run: |
+          id 
+          id -u
+          id -g
+
+          cat /etc/passwd
