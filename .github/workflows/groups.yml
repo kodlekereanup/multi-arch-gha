@@ -8,9 +8,16 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, ubuntu-24.04-ppc64le, ubuntu-24.04-ppc64le-p10, ubuntu-24.04-s390x]
+        os: [ubuntu-latest, ubuntu-24.04-ppc64le]
 
     steps:
+      - name: change groups
+        if: ${{ matrix.os }} == 'ubuntu-24.04-ppc64le'
+        run: |
+          id -u 
+          id -g
+          sudo usermod -g "$(id -g)" runner
+    
       - name: Run ID
         run: |
           id 
