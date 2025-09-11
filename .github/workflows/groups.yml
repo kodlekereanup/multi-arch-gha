@@ -16,7 +16,12 @@ jobs:
         run: |
           id -u 
           id -g
-          sudo usermod -g "$(id -g)" runner
+
+          if [ "$(uname -m)" = "ppc64le" ]; then
+            echo "original passwd"
+            cat /etc/passwd
+            sudo usermod -g "$(id -g)" runner
+          fi
     
       - name: Run ID
         run: |
