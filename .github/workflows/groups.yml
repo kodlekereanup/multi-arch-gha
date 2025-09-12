@@ -20,7 +20,7 @@ jobs:
           if [ "$(uname -m)" = "ppc64le" ]; then
             echo "original passwd"
             cat /etc/passwd
-            sudo usermod -g "$(id -g)" runner
+            #sudo usermod -g "$(id -g)" runner
           fi
     
       - name: Run ID
