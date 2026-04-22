@@ -1,0 +1,48 @@
+name: Network Tests
+
+# Only run on branches (e.g. not tags)
+on:
+  workflow_dispatch:
+
+jobs:
+  fio:
+    name: Tests
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-24.04-ppc64le, ubuntu-24.04-s390x]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        
+      # - name: Update Deps and Install Speedtest CLI
+      #   run: |
+      #     dpkg -l | grep apparmor
+
+      #     systemctl status apparmor
+
+
+      # - name: Run Speedtest CLI
+      #   run: |
+      #     speedtest-cli
+
+
+      # - name: Time download
+      #   run: |
+      #     time curl -o file.zip http://212.183.159.230/1GB.zip
+
+      - name: nslookup
+        run: |
+          cat /etc/resolv.conf
+          resolvectl status
+          
+          ip a
+          echo "---------------------------------------------------"
+          docker run --rm ubuntu:latest sh -c "cat /etc/resolv.conf"
+          docker run --rm ubuntu:latest sh -c "apt-get update && apt-get install -y iproute2 && ip a"
+          
+          for i in {1..200}; do
+            curl -s https://iam.cloud.ibm.com > /dev/null &
+          done
+          wait
